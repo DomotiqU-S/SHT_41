@@ -1,5 +1,17 @@
 #include "I2CController.hpp"
 
+/**
+ * @brief Constructor for the I2CController class.
+ * 
+ * This constructor initializes the I2C controller with the given parameters.
+ * 
+ * @param address The I2C address of the slave device.
+ * @param sda_pin The GPIO pin number for the SDA line.
+ * @param scl_pin The GPIO pin number for the SCL line.
+ * @param clk_speed The clock speed of the I2C bus.
+ * 
+ * @return N/A
+*/
 I2CController::I2CController(uint8_t address, gpio_num_t sda_pin, gpio_num_t scl_pin, uint32_t clk_speed)
 {
     this->sda_pin = sda_pin;
@@ -8,6 +20,13 @@ I2CController::I2CController(uint8_t address, gpio_num_t sda_pin, gpio_num_t scl
     this->address = address;
 }
 
+/**
+ * @brief Initializes the I2C controller.
+ * 
+ * This function initializes the I2C controller with the given parameters.
+ * 
+ * @return ESP_OK if the I2C controller is initialized successfully, ESP_FAIL otherwise.
+*/
 esp_err_t I2CController::begin() {
     i2c_port_t i2c_master_port = I2C_MASTER_NUM;
 
@@ -29,20 +48,60 @@ esp_err_t I2CController::begin() {
     return i2c_driver_install(i2c_master_port, conf.mode, I2C_MASTER_RX_BUF_DISABLE, I2C_MASTER_TX_BUF_DISABLE, 0);
 }
 
+/**
+ * @brief Destructor for the I2CController class.
+ * 
+ * This destructor frees the memory allocated for the I2C controller.
+ * 
+ * @return N/A
+*/
 I2CController::~I2CController()
 {
 }
-
+/**
+ * @brief Reads a byte from the slave device.
+ * 
+ * This function reads a byte from the slave device at the given register address.
+ * 
+ * @param rx_buffer Pointer to the buffer to store the received data.
+ * @param reg The register address to read from.
+ * @param restart if sensor support restart command
+ * 
+ * @return ESP_OK if the byte is read successfully, ESP_FAIL otherwise.
+*/
 esp_err_t I2CController::readByte(uint8_t *rx_buffer, uint8_t reg, bool restart)
 {
     return this->read(rx_buffer, reg, 1, restart);
 }
 
+/**
+ * @brief Reads a word from the slave device.
+ * 
+ * This function reads a word from the slave device at the given register address.
+ * 
+ * @param rx_buffer Pointer to the buffer to store the received data.
+ * @param reg The register address to read from.
+ * @param restart if sensor support restart command
+ * 
+ * @return ESP_OK if the word is read successfully, ESP_FAIL otherwise.
+*/
 esp_err_t I2CController::readWord(uint8_t *rx_buffer, uint8_t reg, bool restart)
 {
     return this->read(rx_buffer, reg, 4, restart);
 }
 
+/**
+ * @brief Reads data from the slave device.
+ * 
+ * This function reads data from the slave device at the given register address.
+ * 
+ * @param rx_buffer Pointer to the buffer to store the received data.
+ * @param reg The register address to read from.
+ * @param len The number of bytes to read.
+ * @param restart if sensor support restart command
+ * 
+ * @return ESP_OK if the data is read successfully, ESP_FAIL otherwise.
+*/
 esp_err_t I2CController::read(uint8_t *rx_buffer, uint8_t reg, uint8_t len, bool restart)
 {
     int ret;
@@ -65,20 +124,47 @@ esp_err_t I2CController::read(uint8_t *rx_buffer, uint8_t reg, uint8_t len, bool
         ret = i2c_master_write_read_device(I2C_MASTER_NUM, this->address, write_buffer, 1, rx_buffer, len, I2C_MASTER_TIMEOUT_MS / portTICK_PERIOD_MS);
         ESP_LOGI(TAG, "ret Write_Read: %d", ret);
     }
-
     return ret;
 }
-
+/**
+ * @brief Writes a byte to the slave device.
+ * 
+ * This function writes a byte to the slave device at the given register address.
+ * 
+ * @param tx_buffer Pointer to the buffer containing the data to write.
+ * @param reg The register address to write to.
+ * 
+ * @return ESP_OK if the byte is written successfully, ESP_FAIL otherwise.
+*/
 esp_err_t I2CController::writeByte(uint8_t *tx_buffer, uint8_t reg)
 {
     return this->write(tx_buffer, reg, 1);
 }
-
+/**
+ * @brief Writes a word to the slave device.
+ * 
+ * This function writes a word to the slave device at the given register address.
+ * 
+ * @param tx_buffer Pointer to the buffer containing the data to write.
+ * @param reg The register address to write to.
+ * 
+ * @return ESP_OK if the word is written successfully, ESP_FAIL otherwise.
+*/
 esp_err_t I2CController::writeWord(uint8_t *tx_buffer, uint8_t reg)
 {
     return this->write(tx_buffer, reg, 4);
 }
-
+/**
+ * @brief Writes data to the slave device.
+ * 
+ * This function writes data to the slave device at the given register address.
+ * 
+ * @param tx_buffer Pointer to the buffer containing the data to write.
+ * @param reg The register address to write to.
+ * @param len The number of bytes to write.
+ * 
+ * @return ESP_OK if the data is written successfully, ESP_FAIL otherwise.
+*/
 esp_err_t I2CController::write(uint8_t *tx_buffer, uint8_t reg, uint8_t len)
 {
     int ret;

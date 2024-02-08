@@ -2,7 +2,7 @@
 
 extern "C" void app_main(void)
 {
-    Temp_Sensor *temp_sensor = new Temp_Sensor(0x44,(gpio_num_t)8,(gpio_num_t)9, 100000);
+    TempSensor *temp_sensor = new TempSensor(0x44,(gpio_num_t)8,(gpio_num_t)9, 100000);
     temp_sensor->read();
     delete temp_sensor;
 }

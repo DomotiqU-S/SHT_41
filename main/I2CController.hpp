@@ -7,12 +7,12 @@
 #include "esp_log.h"
 #include "driver/i2c.h"
 
-#define I2C_MASTER_NUM              (i2c_port_t)0                          /*!< I2C master i2c port number, the number of i2c peripheral interfaces available will depend on the chip */
-#define I2C_MASTER_FREQ_HZ          400000                     /*!< I2C master clock frequency */
-#define I2C_MASTER_TX_BUF_DISABLE   0                          /*!< I2C master doesn't need buffer */
-#define I2C_MASTER_RX_BUF_DISABLE   0                          /*!< I2C master doesn't need buffer */
-#define I2C_MASTER_TIMEOUT_MS       1000
-#define DEBUG_I2C_CONTROLLER        1
+#define I2C_MASTER_NUM              (i2c_port_t)0   /*!< I2C master i2c port number, the number of i2c peripheral interfaces available will depend on the chip */
+#define I2C_MASTER_FREQ_HZ          400000          /*!< I2C master clock frequency */
+#define I2C_MASTER_TX_BUF_DISABLE   0               /*!< I2C master doesn't need buffer */
+#define I2C_MASTER_RX_BUF_DISABLE   0               /*!< I2C master doesn't need buffer */
+#define I2C_MASTER_TIMEOUT_MS       1000            /*!< I2C timeout in milliseconds */
+#define DEBUG_I2C_CONTROLLER        1               /*!< Enable debug logs for the I2C controller */
 
 static const char *TAG = "I2C_CONTROLLER";
 
