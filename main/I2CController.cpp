@@ -5,6 +5,7 @@ I2CController::I2CController(uint8_t address, gpio_num_t sda_pin, gpio_num_t scl
     this->sda_pin = sda_pin;
     this->scl_pin = scl_pin;
     this->clk_speed = clk_speed;
+    this->address = address;
 }
 
 esp_err_t I2CController::begin() {
@@ -49,12 +50,13 @@ esp_err_t I2CController::read(uint8_t *rx_buffer, uint8_t reg, uint8_t len, bool
     uint8_t write_buffer[1] = {reg};
 
     #if DEBUG_I2C_CONTROLLER
-        ESP_LOGI(TAG, "Reading %d bytes from register 0x%02x", len, reg);
+        ESP_LOGI(TAG, "Reading %d bytes from register 0x%02x in address 0x%02x", len, reg, this->address);
     #endif
-    if(restart)
+    if(!restart)
     {
         ret = i2c_master_write_to_device(I2C_MASTER_NUM, this->address, write_buffer, 1, I2C_MASTER_TIMEOUT_MS / portTICK_PERIOD_MS);
         ESP_LOGI(TAG, "ret write: %d", ret);
+        vTaskDelay(1);
         ret |= i2c_master_read_from_device(I2C_MASTER_NUM, this->address, rx_buffer, len, I2C_MASTER_TIMEOUT_MS / portTICK_PERIOD_MS);
         ESP_LOGI(TAG, "ret read: %d", ret);
     }

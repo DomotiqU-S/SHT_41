@@ -20,6 +20,7 @@ public:
     esp_err_t read();
     float getTemp(uint8_t *data);
     float getHumidity(uint8_t *data);
+    esp_err_t Crc8(const uint8_t *data, int len);
 };
 
 #endif // TEMP_SENSOR_HPP
