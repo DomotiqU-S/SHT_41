@@ -1,23 +1,5 @@
 #include "Temp_Sensor.hpp"
- /**
- * @brief Constructor for the TempSensor class.
- *  
- * This constructor initializes the I2C controller with the given parameters.
- * 
- * @param address The I2C address of the temperature sensor.
- * @param sda_pin The GPIO pin number for the SDA line.
- * @param scl_pin The GPIO pin number for the SCL line.
- * @param clk_speed The clock speed of the I2C bus.
- * 
- * @return N/A
-*/
-TempSensor::TempSensor(uint8_t address, gpio_num_t sda_pin, gpio_num_t scl_pin, uint32_t clk_speed)
-{
-    this->i2c_controller = new I2CController(address, sda_pin, scl_pin, clk_speed);
-    this->i2c_controller->begin();
-    // soft reset on begin
-    this->i2c_controller->write(nullptr, 0x94, 0);
-}
+
 /**
  * @brief Destructor for the TempSensor class.
  * 
@@ -27,7 +9,6 @@ TempSensor::TempSensor(uint8_t address, gpio_num_t sda_pin, gpio_num_t scl_pin, 
 */
 TempSensor::~TempSensor()
 {
-    delete this->i2c_controller;
 }
 /**
  * @brief Reads data from the temperature sensor.
@@ -41,14 +22,14 @@ TempSensor::~TempSensor()
 esp_err_t TempSensor::read()
 {
     uint8_t data[6];
-    esp_err_t ret = this->i2c_controller->read(data, REG_ADDR, 6, false);
+    esp_err_t ret = this->i2c_controller.read(data, REG_ADDR, 6, false);
     if (ret != ESP_OK)
     {
         ESP_LOGE(TAG, "failed to read data from sensor");
         return ret;
     }
     ESP_LOGI(TAG, "data read from sensor: %02x %02x %02x %02x %02x %02x", data[0], data[1], data[2], data[3], data[4], data[5]);
-    if (this->Crc8(data, 2) != data[2] || this->Crc8(data + 3, 2) != data[5])
+    if (crc8(data, 2) != data[2] || crc8(data + 3, 2) != data[5])
     {
         return ESP_FAIL;
     }

@@ -1,0 +1,3 @@
+[submodule "components/BusController"]
+	path = components/BusController
+	url = https://github.com/DomotiqU-S/BusIO

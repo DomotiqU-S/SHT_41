@@ -1,2 +1,2 @@
-idf_component_register(SRCS "main.cpp" "Temp_Sensor.cpp" "I2CController.cpp"
+idf_component_register(SRCS "main.cpp" "Temp_Sensor.cpp"
                        INCLUDE_DIRS ".")
