@@ -1,4 +1,4 @@
-#include "Temp_Sensor.cpp"
+#include "Temp_Sensor.hpp"
 
 extern "C" void app_main(void)
 {
