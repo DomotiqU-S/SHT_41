@@ -4,19 +4,19 @@
 
 ## Overview
 
-This exemple read the temperature and humidity from a DHT40 sensor and print the values to the console.
+This exemple read the temperature and humidity from a SHT41 sensor and print the values to the console.
 
 ## How to use example
 
 ### Hardware Required
 
-To run this example, you should have one ESP32, ESP32-S, ESP32-C or ESP32-H based development board as well as a DHT40 sensor. 
+To run this example, you should have one ESP32, ESP32-S, ESP32-C or ESP32-H based development board as well as a SHT41 sensor. 
 
 #### Pin Assignment:
 
-In this example, the DHT40 sensor is connected to the ESP32 as follows:
-    SDA pin of DHT40 sensor is connected to GPIO 8 of ESP32-H2.
-    SCL pin of DHT40 sensor is connected to GPIO 9 of ESP32-H2.
+In this example, the SHT41 sensor is connected to the ESP32 as follows:
+    SDA pin of SHT41 sensor is connected to GPIO 8 of ESP32-H2.
+    SCL pin of SHT41 sensor is connected to GPIO 9 of ESP32-H2.
 
 **Note:** There's no need to add an external pull-up resistors for SDA/SCL pin, because the driver will enable the internal pull-up resistors.
 
